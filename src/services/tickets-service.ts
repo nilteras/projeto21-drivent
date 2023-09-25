@@ -21,6 +21,7 @@ async function getTickets(userId: number){
 async function postTickets(userId: number, ticketTypeId: number){
     const enrollment = await ticketsRepository.userEnrollmentDB(userId)
     if(!enrollment) throw notFoundError()
+   
 
     const ticketData = {
         ticketTypeId,
