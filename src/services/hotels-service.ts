@@ -32,6 +32,9 @@ async function getHotelById(userId: number, hotelId: number){
     ticketExist.TicketType.isRemote === true ||
     ticketExist.TicketType.includesHotel === false) throw PaymentRequired();
 
+    const hotel = await hotelsRepository.getAllHotelsDB();
+    if (!hotel || hotel.length === 0) throw notFoundError();
+
     const resultHotel = await hotelsRepository.getHotelByIdDB(hotelId);
 
     return resultHotel;
