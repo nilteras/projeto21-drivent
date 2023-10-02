@@ -1,7 +1,7 @@
 import { notFoundError } from "@/errors";
+import { PaymentRequired } from "@/errors/payment-required-error";
 import { enrollmentRepository, ticketsRepository } from "@/repositories";
 import { hotelsRepository } from "@/repositories/hotels-repository";
-import { PAYMENT_REQUIRED } from "http-status";
 
 async function getAllHotels(userId: number){
   
@@ -13,7 +13,7 @@ async function getAllHotels(userId: number){
     
     if(ticketExist.status !== 'PAID' || 
     ticketExist.TicketType.isRemote === true ||
-    ticketExist.TicketType.includesHotel === false) throw PAYMENT_REQUIRED;
+    ticketExist.TicketType.includesHotel === false) throw PaymentRequired();
 
     const hotels = await hotelsRepository.getAllHotelsDB();
     if(!hotels || hotels.length === 0) throw notFoundError();
@@ -30,7 +30,7 @@ async function getHotelById(userId: number, hotelId: number){
 
     if(ticketExist.status !== 'PAID' || 
     ticketExist.TicketType.isRemote === true ||
-    ticketExist.TicketType.includesHotel === false) throw PAYMENT_REQUIRED;
+    ticketExist.TicketType.includesHotel === false) throw PaymentRequired();
 
     const resultHotel = await hotelsRepository.getHotelByIdDB(hotelId);
 
