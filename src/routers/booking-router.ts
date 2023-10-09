@@ -1,4 +1,4 @@
-import { getBookings, postBooking, updateBookingById } from "@/controllers/booking.controller";
+import { getBookings, postBooking, updateBookingById } from "@/controllers/booking-controller";
 import { authenticateToken, validateBody } from "@/middlewares";
 import { bookingsSchema } from "@/schemas/booking-schemas";
 import { Router } from "express";
