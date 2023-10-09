@@ -56,422 +56,649 @@ describe('GET /booking', () => {
 describe('POST /booking', () => {
     it('should return 403 when ticket status is not PAID', async () => {
         const mockEnrollmentId: Enrollment & {
-          Address: Address[];
+            Address: Address[];
         } = {
-          id: 1,
-          name: faker.name.firstName(),
-          cpf: faker.name.lastName(),
-          birthday: new Date(),
-          phone: faker.finance.account(),
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Address: [
-            {
-              id: 1,
-              cep: faker.address.zipCode(),
-              street: faker.address.streetName(),
-              city: faker.address.city(),
-              state: faker.address.state(),
-              number: faker.address.buildingNumber(),
-              neighborhood: faker.address.direction(),
-              addressDetail: faker.address.streetAddress() || null,
-              enrollmentId: 1,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ],
-        };
-    
-        const mockTicketUser: Ticket & {
-          TicketType: TicketType;
-        } = {
-          id: 1,
-          ticketTypeId: 1,
-          enrollmentId: mockEnrollmentId.id,
-          status: TicketStatus.RESERVED,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          TicketType: {
             id: 1,
-            name: faker.name.jobTitle(),
-            price: 100,
-            isRemote: false,
-            includesHotel: true,
+            name: faker.name.firstName(),
+            cpf: faker.name.lastName(),
+            birthday: new Date(),
+            phone: faker.finance.account(),
+            userId: 1,
             createdAt: new Date(),
             updatedAt: new Date(),
-          },
+            Address: [
+                {
+                    id: 1,
+                    cep: faker.address.zipCode(),
+                    street: faker.address.streetName(),
+                    city: faker.address.city(),
+                    state: faker.address.state(),
+                    number: faker.address.buildingNumber(),
+                    neighborhood: faker.address.direction(),
+                    addressDetail: faker.address.streetAddress() || null,
+                    enrollmentId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
         };
-    
+
+        const mockTicketUser: Ticket & {
+            TicketType: TicketType;
+        } = {
+            id: 1,
+            ticketTypeId: 1,
+            enrollmentId: mockEnrollmentId.id,
+            status: TicketStatus.RESERVED,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            TicketType: {
+                id: 1,
+                name: faker.name.jobTitle(),
+                price: 100,
+                isRemote: false,
+                includesHotel: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        };
+
         const mockCreateBooking = {
-          userId: 1,
-          roomId: 1,
+            userId: 1,
+            roomId: 1,
         };
-    
+
         jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(mockEnrollmentId);
         jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockTicketUser);
-    
+
         const promise = bookingsService.createBooking(mockCreateBooking.userId, mockCreateBooking.roomId);
         expect(promise).rejects.toEqual({
-          name: 'ForbiddenError',
-          message: 'Cannot do this action 403!',
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
         });
-      });
+    });
 
     it('should return 403 when ticket type.isRemote = true', async () => {
         const mockEnrollmentId: Enrollment & {
-          Address: Address[];
+            Address: Address[];
         } = {
-          id: 1,
-          name: faker.name.firstName(),
-          cpf: faker.name.lastName(),
-          birthday: new Date(),
-          phone: faker.finance.account(),
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Address: [
-            {
-              id: 1,
-              cep: faker.address.zipCode(),
-              street: faker.address.streetName(),
-              city: faker.address.city(),
-              state: faker.address.state(),
-              number: faker.address.buildingNumber(),
-              neighborhood: faker.address.direction(),
-              addressDetail: faker.address.streetAddress() || null,
-              enrollmentId: 1,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ],
-        };
-    
-        const mockTicketUser: Ticket & {
-          TicketType: TicketType;
-        } = {
-          id: 1,
-          ticketTypeId: 1,
-          enrollmentId: mockEnrollmentId.id,
-          status: TicketStatus.PAID,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          TicketType: {
             id: 1,
-            name: faker.name.jobTitle(),
-            price: 100,
-            isRemote: true,
-            includesHotel: true,
+            name: faker.name.firstName(),
+            cpf: faker.name.lastName(),
+            birthday: new Date(),
+            phone: faker.finance.account(),
+            userId: 1,
             createdAt: new Date(),
             updatedAt: new Date(),
-          },
+            Address: [
+                {
+                    id: 1,
+                    cep: faker.address.zipCode(),
+                    street: faker.address.streetName(),
+                    city: faker.address.city(),
+                    state: faker.address.state(),
+                    number: faker.address.buildingNumber(),
+                    neighborhood: faker.address.direction(),
+                    addressDetail: faker.address.streetAddress() || null,
+                    enrollmentId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
         };
-    
+
+        const mockTicketUser: Ticket & {
+            TicketType: TicketType;
+        } = {
+            id: 1,
+            ticketTypeId: 1,
+            enrollmentId: mockEnrollmentId.id,
+            status: TicketStatus.PAID,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            TicketType: {
+                id: 1,
+                name: faker.name.jobTitle(),
+                price: 100,
+                isRemote: true,
+                includesHotel: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        };
+
         const mockCreateBooking = {
-          userId: 1,
-          roomId: 1,
+            userId: 1,
+            roomId: 1,
         };
-    
+
         jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(mockEnrollmentId);
         jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockTicketUser);
-    
+
         const promise = bookingsService.createBooking(mockCreateBooking.userId, mockCreateBooking.roomId);
         expect(promise).rejects.toEqual({
-          name: 'ForbiddenError',
-          message: 'Cannot do this action 403!',
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
         });
-      });
+    });
 
-      it('should return 403 when ticket type.includesHotel = false', async () => {
+    it('should return 403 when ticket type.includesHotel = false', async () => {
         const mockEnrollmentId: Enrollment & {
-          Address: Address[];
+            Address: Address[];
         } = {
-          id: 1,
-          name: faker.name.firstName(),
-          cpf: faker.name.lastName(),
-          birthday: new Date(),
-          phone: faker.finance.account(),
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Address: [
-            {
-              id: 1,
-              cep: faker.address.zipCode(),
-              street: faker.address.streetName(),
-              city: faker.address.city(),
-              state: faker.address.state(),
-              number: faker.address.buildingNumber(),
-              neighborhood: faker.address.direction(),
-              addressDetail: faker.address.streetAddress() || null,
-              enrollmentId: 1,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ],
-        };
-    
-        const mockTicketUser: Ticket & {
-          TicketType: TicketType;
-        } = {
-          id: 1,
-          ticketTypeId: 1,
-          enrollmentId: mockEnrollmentId.id,
-          status: TicketStatus.PAID,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          TicketType: {
             id: 1,
-            name: faker.name.jobTitle(),
-            price: 100,
-            isRemote: false,
-            includesHotel: false,
+            name: faker.name.firstName(),
+            cpf: faker.name.lastName(),
+            birthday: new Date(),
+            phone: faker.finance.account(),
+            userId: 1,
             createdAt: new Date(),
             updatedAt: new Date(),
-          },
+            Address: [
+                {
+                    id: 1,
+                    cep: faker.address.zipCode(),
+                    street: faker.address.streetName(),
+                    city: faker.address.city(),
+                    state: faker.address.state(),
+                    number: faker.address.buildingNumber(),
+                    neighborhood: faker.address.direction(),
+                    addressDetail: faker.address.streetAddress() || null,
+                    enrollmentId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
         };
-    
+
+        const mockTicketUser: Ticket & {
+            TicketType: TicketType;
+        } = {
+            id: 1,
+            ticketTypeId: 1,
+            enrollmentId: mockEnrollmentId.id,
+            status: TicketStatus.PAID,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            TicketType: {
+                id: 1,
+                name: faker.name.jobTitle(),
+                price: 100,
+                isRemote: false,
+                includesHotel: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        };
+
         const mockCreateBooking = {
-          userId: 1,
-          roomId: 1,
+            userId: 1,
+            roomId: 1,
         };
-    
+
         jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(mockEnrollmentId);
         jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockTicketUser);
-    
+
         const promise = bookingsService.createBooking(mockCreateBooking.userId, mockCreateBooking.roomId);
         expect(promise).rejects.toEqual({
-          name: 'ForbiddenError',
-          message: 'Cannot do this action 403!',
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
         });
-      });
+    });
 
-      it('should return 404 when roomId doesnt exist', async () => {
+    it('should return 404 when roomId doesnt exist', async () => {
         const mockEnrollmentId: Enrollment & {
-          Address: Address[];
+            Address: Address[];
         } = {
-          id: 1,
-          name: faker.name.firstName(),
-          cpf: faker.name.lastName(),
-          birthday: new Date(),
-          phone: faker.finance.account(),
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Address: [
-            {
-              id: 1,
-              cep: faker.address.zipCode(),
-              street: faker.address.streetName(),
-              city: faker.address.city(),
-              state: faker.address.state(),
-              number: faker.address.buildingNumber(),
-              neighborhood: faker.address.direction(),
-              addressDetail: faker.address.streetAddress() || null,
-              enrollmentId: 1,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ],
-        };
-    
-        const mockTicketUser: Ticket & {
-          TicketType: TicketType;
-        } = {
-          id: 1,
-          ticketTypeId: 1,
-          enrollmentId: mockEnrollmentId.id,
-          status: TicketStatus.PAID,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          TicketType: {
             id: 1,
-            name: faker.name.jobTitle(),
-            price: 100,
-            isRemote: false,
-            includesHotel: true,
+            name: faker.name.firstName(),
+            cpf: faker.name.lastName(),
+            birthday: new Date(),
+            phone: faker.finance.account(),
+            userId: 1,
             createdAt: new Date(),
             updatedAt: new Date(),
-          },
+            Address: [
+                {
+                    id: 1,
+                    cep: faker.address.zipCode(),
+                    street: faker.address.streetName(),
+                    city: faker.address.city(),
+                    state: faker.address.state(),
+                    number: faker.address.buildingNumber(),
+                    neighborhood: faker.address.direction(),
+                    addressDetail: faker.address.streetAddress() || null,
+                    enrollmentId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
         };
-    
+
+        const mockTicketUser: Ticket & {
+            TicketType: TicketType;
+        } = {
+            id: 1,
+            ticketTypeId: 1,
+            enrollmentId: mockEnrollmentId.id,
+            status: TicketStatus.PAID,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            TicketType: {
+                id: 1,
+                name: faker.name.jobTitle(),
+                price: 100,
+                isRemote: false,
+                includesHotel: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        };
+
         const mockCreateBooking = {
-          userId: mockEnrollmentId.userId,
-          roomId: 1,
+            userId: mockEnrollmentId.userId,
+            roomId: 1,
         };
-    
+
         jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(mockEnrollmentId);
         jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockTicketUser);
         jest.spyOn(bookingsRepository, 'getRoomIdDB').mockResolvedValueOnce(null);
-    
+
         const promise = bookingsService.createBooking(mockCreateBooking.userId, mockCreateBooking.roomId);
         expect(promise).rejects.toEqual({
-          name: 'NotFoundError',
-          message: 'No result for this search!',
+            name: 'NotFoundError',
+            message: 'No result for this search!',
         });
-      });
-    
-      it('should return 403 when room.capacity is full', async () => {
+    });
+
+    it('should return 403 when room.capacity is full', async () => {
         const mockEnrollmentId: Enrollment & {
-          Address: Address[];
+            Address: Address[];
         } = {
-          id: 1,
-          name: faker.name.firstName(),
-          cpf: faker.name.lastName(),
-          birthday: new Date(),
-          phone: faker.finance.account(),
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Address: [
-            {
-              id: 1,
-              cep: faker.address.zipCode(),
-              street: faker.address.streetName(),
-              city: faker.address.city(),
-              state: faker.address.state(),
-              number: faker.address.buildingNumber(),
-              neighborhood: faker.address.direction(),
-              addressDetail: faker.address.streetAddress() || null,
-              enrollmentId: 1,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ],
-        };
-    
-        const mockTicketUser: Ticket & {
-          TicketType: TicketType;
-        } = {
-          id: 1,
-          ticketTypeId: 1,
-          enrollmentId: mockEnrollmentId.id,
-          status: TicketStatus.PAID,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          TicketType: {
             id: 1,
-            name: faker.name.jobTitle(),
-            price: 100,
-            isRemote: false,
-            includesHotel: true,
+            name: faker.name.firstName(),
+            cpf: faker.name.lastName(),
+            birthday: new Date(),
+            phone: faker.finance.account(),
+            userId: 1,
             createdAt: new Date(),
             updatedAt: new Date(),
-          },
+            Address: [
+                {
+                    id: 1,
+                    cep: faker.address.zipCode(),
+                    street: faker.address.streetName(),
+                    city: faker.address.city(),
+                    state: faker.address.state(),
+                    number: faker.address.buildingNumber(),
+                    neighborhood: faker.address.direction(),
+                    addressDetail: faker.address.streetAddress() || null,
+                    enrollmentId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
         };
-    
-        const mockCreateRoom: Room & {
-          Booking: Booking[];
+
+        const mockTicketUser: Ticket & {
+            TicketType: TicketType;
         } = {
-          id: 1,
-          name: faker.commerce.productName(),
-          capacity: 0,
-          hotelId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Booking: [],
+            id: 1,
+            ticketTypeId: 1,
+            enrollmentId: mockEnrollmentId.id,
+            status: TicketStatus.PAID,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            TicketType: {
+                id: 1,
+                name: faker.name.jobTitle(),
+                price: 100,
+                isRemote: false,
+                includesHotel: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
         };
-    
+
+        const mockCreateRoom: Room & {
+            Booking: Booking[];
+        } = {
+            id: 1,
+            name: faker.commerce.productName(),
+            capacity: 0,
+            hotelId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Booking: [],
+        };
+
         jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(mockEnrollmentId);
         jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockTicketUser);
         jest.spyOn(bookingsRepository, 'getRoomIdDB').mockResolvedValueOnce(mockCreateRoom);
-    
+
         const promise = bookingsService.createBooking(mockEnrollmentId.userId, mockCreateRoom.id);
         expect(promise).rejects.toEqual({
-          name: 'ForbiddenError',
-          message: 'Cannot do this action 403!',
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
         });
-      });
-    
-      it('should createBooking sucess', async () => {
+    });
+
+    it('should createBooking sucess', async () => {
         const mockEnrollmentId: Enrollment & {
-          Address: Address[];
+            Address: Address[];
         } = {
-          id: 1,
-          name: faker.name.firstName(),
-          cpf: faker.name.lastName(),
-          birthday: new Date(),
-          phone: faker.finance.account(),
-          userId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Address: [
-            {
-              id: 1,
-              cep: faker.address.zipCode(),
-              street: faker.address.streetName(),
-              city: faker.address.city(),
-              state: faker.address.state(),
-              number: faker.address.buildingNumber(),
-              neighborhood: faker.address.direction(),
-              addressDetail: faker.address.streetAddress() || null,
-              enrollmentId: 1,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            },
-          ],
-        };
-    
-        const mockTicketUser: Ticket & {
-          TicketType: TicketType;
-        } = {
-          id: 1,
-          ticketTypeId: 1,
-          enrollmentId: mockEnrollmentId.id,
-          status: TicketStatus.PAID,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          TicketType: {
             id: 1,
-            name: faker.name.jobTitle(),
-            price: 100,
-            isRemote: false,
-            includesHotel: true,
+            name: faker.name.firstName(),
+            cpf: faker.name.lastName(),
+            birthday: new Date(),
+            phone: faker.finance.account(),
+            userId: 1,
             createdAt: new Date(),
             updatedAt: new Date(),
-          },
+            Address: [
+                {
+                    id: 1,
+                    cep: faker.address.zipCode(),
+                    street: faker.address.streetName(),
+                    city: faker.address.city(),
+                    state: faker.address.state(),
+                    number: faker.address.buildingNumber(),
+                    neighborhood: faker.address.direction(),
+                    addressDetail: faker.address.streetAddress() || null,
+                    enrollmentId: 1,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
         };
-    
+
+        const mockTicketUser: Ticket & {
+            TicketType: TicketType;
+        } = {
+            id: 1,
+            ticketTypeId: 1,
+            enrollmentId: mockEnrollmentId.id,
+            status: TicketStatus.PAID,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            TicketType: {
+                id: 1,
+                name: faker.name.jobTitle(),
+                price: 100,
+                isRemote: false,
+                includesHotel: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        };
+
         const mockCreateRoom: Room & {
-          Booking: Booking[];
+            Booking: Booking[];
         } = {
-          id: 1,
-          name: faker.commerce.productName(),
-          capacity: 2,
-          hotelId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Booking: [],
+            id: 1,
+            name: faker.commerce.productName(),
+            capacity: 2,
+            hotelId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Booking: [],
         };
-    
+
         const mockCreateBook: Booking & {
-          Room: Room;
+            Room: Room;
         } = {
-          id: 1,
-          userId: mockEnrollmentId.userId,
-          roomId: mockCreateRoom.id,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          Room: {
-            id: mockCreateRoom.id,
-            name: mockCreateRoom.name,
-            hotelId: mockCreateRoom.hotelId,
-            createdAt: mockCreateRoom.createdAt,
-            capacity: mockCreateRoom.capacity,
-            updatedAt: mockCreateRoom.updatedAt,
-          },
+            id: 1,
+            userId: mockEnrollmentId.userId,
+            roomId: mockCreateRoom.id,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Room: {
+                id: mockCreateRoom.id,
+                name: mockCreateRoom.name,
+                hotelId: mockCreateRoom.hotelId,
+                createdAt: mockCreateRoom.createdAt,
+                capacity: mockCreateRoom.capacity,
+                updatedAt: mockCreateRoom.updatedAt,
+            },
         };
-    
+
         jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockResolvedValueOnce(mockEnrollmentId);
         jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockTicketUser);
         jest.spyOn(bookingsRepository, 'getRoomIdDB').mockResolvedValueOnce(mockCreateRoom);
         jest.spyOn(bookingsRepository, 'createBookingDB').mockResolvedValueOnce(mockCreateBook);
-    
+
         const promise = await bookingsService.createBooking(mockEnrollmentId.userId, mockCreateRoom.id);
         expect(promise).toEqual({
-          bookingId: mockCreateBook.id,
-          Room: mockCreateBook.Room,
+            bookingId: mockCreateBook.id,
+            Room: mockCreateBook.Room,
         });
-      });
+    });
 
+})
+
+describe('PUT /booking/:bookingId', () => {
+    it('should return 403 when user doesnt have a booking', async () => {
+        jest.spyOn(bookingsRepository, 'getBookingsDB').mockResolvedValueOnce(null);
+
+        const mockUpdateInput = {
+            userId: 4,
+            bookingId: 1,
+            roomId: 4,
+        };
+
+        const promise = bookingsService.updateBooking(
+            mockUpdateInput.userId,
+            mockUpdateInput.bookingId,
+            mockUpdateInput.roomId,
+        );
+        expect(promise).rejects.toEqual({
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
+        });
+    });
+
+    it('should return 403 when userBooking.id is different from :bookingId', async () => {
+        const mockCreateBook: Booking & {
+            Room: Room;
+        } = {
+            id: 1,
+            userId: 1,
+            roomId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Room: {
+                id: 1,
+                name: faker.commerce.department(),
+                hotelId: 1,
+                createdAt: new Date(),
+                capacity: 5,
+                updatedAt: new Date(),
+            },
+        };
+
+        jest.spyOn(bookingsRepository, 'getBookingsDB').mockResolvedValueOnce(mockCreateBook);
+
+        const mockUpdateInput = {
+            userId: mockCreateBook.userId,
+            bookingId: 2,
+            roomId: 1,
+        };
+
+        const promise = bookingsService.updateBooking(
+            mockUpdateInput.userId,
+            mockUpdateInput.bookingId,
+            mockUpdateInput.roomId,
+        );
+        expect(promise).rejects.toEqual({
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
+        });
+    });
+
+
+    it('should return 404 when roomId doesnt exist', async () => {
+        const mockCreateBook: Booking & {
+            Room: Room;
+        } = {
+            id: 1,
+            userId: 1,
+            roomId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Room: {
+                id: 1,
+                name: faker.commerce.department(),
+                hotelId: 1,
+                createdAt: new Date(),
+                capacity: 5,
+                updatedAt: new Date(),
+            },
+        };
+
+        jest.spyOn(bookingsRepository, 'getBookingsDB').mockResolvedValueOnce(mockCreateBook);
+        jest.spyOn(bookingsRepository, 'getRoomIdDB').mockResolvedValueOnce(null);
+
+        const mockUpdateInput = {
+            userId: mockCreateBook.userId,
+            bookingId: mockCreateBook.id,
+            roomId: mockCreateBook.Room.id,
+        };
+
+        const promise = bookingsService.updateBooking(
+            mockUpdateInput.userId,
+            mockUpdateInput.bookingId,
+            mockUpdateInput.roomId,
+        );
+        expect(promise).rejects.toEqual({
+            name: 'NotFoundError',
+            message: 'No result for this search!',
+        });
+    });
+
+    it('should return 403 when room capacity is full', async () => {
+        const mockCreateBook: Booking & {
+            Room: Room;
+        } = {
+            id: 1,
+            userId: 1,
+            roomId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Room: {
+                id: 1,
+                name: faker.commerce.department(),
+                hotelId: 1,
+                createdAt: new Date(),
+                capacity: 5,
+                updatedAt: new Date(),
+            },
+        };
+
+        const mockCreateRoom: Room & {
+            Booking: Booking[];
+        } = {
+            id: 1,
+            name: faker.commerce.productName(),
+            capacity: 1,
+            hotelId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Booking: [
+                {
+                    id: mockCreateBook.id,
+                    userId: mockCreateBook.userId,
+                    roomId: mockCreateBook.Room.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
+        };
+
+        jest.spyOn(bookingsRepository, 'getBookingsDB').mockResolvedValueOnce(mockCreateBook);
+        jest.spyOn(bookingsRepository, 'getRoomIdDB').mockResolvedValueOnce(mockCreateRoom);
+
+        const mockUpdateInput = {
+            userId: mockCreateBook.userId,
+            bookingId: mockCreateBook.id,
+            roomId: mockCreateRoom.id,
+        };
+
+        const promise = bookingsService.updateBooking(
+            mockUpdateInput.userId,
+            mockUpdateInput.bookingId,
+            mockUpdateInput.roomId,
+        );
+        expect(promise).rejects.toEqual({
+            name: 'ForbiddenError',
+            message: 'Cannot do this action 403!',
+        });
+    });
+
+    it('should return sucess with updateBooking data', async () => {
+        const mockCreateBook: Booking & {
+            Room: Room;
+        } = {
+            id: 1,
+            userId: 1,
+            roomId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Room: {
+                id: 1,
+                name: faker.commerce.department(),
+                hotelId: 1,
+                createdAt: new Date(),
+                capacity: 5,
+                updatedAt: new Date(),
+            },
+        };
+
+        const mockCreateRoom: Room & {
+            Booking: Booking[];
+        } = {
+            id: 1,
+            name: faker.commerce.productName(),
+            capacity: 5,
+            hotelId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Booking: [
+                {
+                    id: mockCreateBook.id,
+                    userId: mockCreateBook.userId,
+                    roomId: mockCreateBook.Room.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
+        };
+
+        jest.spyOn(bookingsRepository, 'getBookingsDB').mockResolvedValueOnce(mockCreateBook);
+        jest.spyOn(bookingsRepository, 'getRoomIdDB').mockResolvedValueOnce(mockCreateRoom);
+        jest.spyOn(bookingsRepository, 'updateBookingDB').mockResolvedValueOnce(mockCreateBook);
+
+        const mockUpdateInput = {
+            userId: mockCreateBook.userId,
+            bookingId: mockCreateBook.id,
+            roomId: mockCreateBook.Room.id,
+        };
+
+        const promise = await bookingsService.updateBooking(
+            mockUpdateInput.userId,
+            mockUpdateInput.bookingId,
+            mockUpdateInput.roomId,
+        );
+
+        expect(promise).toEqual({
+            bookingId: expect.any(Number),
+            Room: {
+                id: expect.any(Number),
+                capacity: expect.any(Number),
+                createdAt: expect.any(Date),
+                hotelId: expect.any(Number),
+                name: expect.any(String),
+                updatedAt: expect.any(Date),
+            },
+        });
+    });
 })
